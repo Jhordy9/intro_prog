@@ -10,8 +10,6 @@ public class App {
     private static char computerColor;
 
     public static void main(String[] args) throws Exception {
-        init();
-
         System.out.println("Escolha uma cor: Vermelho (V) ou Azul (A): ");
         playerColor = Character.toUpperCase(sc.next().charAt(0));
 
@@ -21,6 +19,7 @@ public class App {
             computerColor = 'V';
         }
 
+        init();
         run();
 
         sc.close();
