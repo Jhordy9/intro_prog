@@ -17,8 +17,9 @@ public class App {
 
         if (playerColor == 'V') {
             computerColor = 'A';
+        } else {
+            computerColor = 'V';
         }
-        computerColor = 'V';
 
         run();
 
@@ -43,18 +44,25 @@ public class App {
     }
 
     static void playerMove() {
+        boolean moveMade = false;
+
         System.out.println("Escolha uma coluna entre 1 e 7: ");
         int column = sc.nextInt() - 1;
 
         if (column < 0 || column > 6) {
             System.out.println("Coluna inválida!");
             playerMove();
-        }
-
-        for (int i = 5; i >= 0; i--) {
-            if (board[i][column] == 'B') {
-                board[i][column] = playerColor;
-                break;
+        } else {
+            for (int i = 5; i >= 0; i--) {
+                if (board[i][column] == 'B') {
+                    board[i][column] = playerColor;
+                    moveMade = true;
+                    break;
+                }
+            }
+            if (!moveMade) {
+                System.out.println("Coluna cheia! Escolha outra.");
+                playerMove();
             }
         }
 
@@ -66,12 +74,18 @@ public class App {
 
     static void randomComputerMove() {
         int column = (int) (Math.random() * COLUMN);
+        boolean moveMade = false;
 
         for (int i = 5; i >= 0; i--) {
             if (board[i][column] == 'B') {
                 board[i][column] = computerColor;
+                moveMade = true;
                 break;
             }
+        }
+
+        if (!moveMade) {
+            randomComputerMove();
         }
 
         if (isWin(computerColor)) {
@@ -88,7 +102,6 @@ public class App {
                         && board[i][j + 3] == color)
                     return true;
             }
-
         }
 
         // Vertical
@@ -98,7 +111,6 @@ public class App {
                         && board[i + 3][j] == color)
                     return true;
             }
-
         }
 
         // Diagonal up
@@ -108,6 +120,7 @@ public class App {
                         && board[i - 3][j + 3] == color)
                     return true;
             }
+
         }
 
         // Diagonal down
@@ -128,6 +141,7 @@ public class App {
     }
 
     static void runOptions() {
+        // Still continue if the option number is different from 1
         System.out.println("Digite 1 para continuar, 2 para ver o tabuleiro ou 0 para resetar o jogo: ");
         int option = sc.nextInt();
 
