@@ -1,37 +1,41 @@
 import java.util.Scanner;
 
 public class App {
-    static Scanner sc = new Scanner(System.in);
-    static char[][] board = new char[6][7];
-    static char playerColor;
-    static char computerColor;
+    private static Scanner sc = new Scanner(System.in);
+    private static final int LINE = 6;
+    private static final int COLUMN = 7;
+
+    private static char[][] board = new char[LINE][COLUMN];
+    private static char playerColor;
+    private static char computerColor;
 
     public static void main(String[] args) throws Exception {
-
         init();
 
         System.out.println("Escolha uma cor: Vermelho (V) ou Azul (A): ");
-        playerColor = sc.next().charAt(0);
+        playerColor = Character.toUpperCase(sc.next().charAt(0));
 
         if (playerColor == 'V') {
             computerColor = 'A';
         }
         computerColor = 'V';
 
+        run();
+
         sc.close();
     }
 
     static void init() {
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 7; j++) {
+        for (int i = 0; i < LINE; i++) {
+            for (int j = 0; j < COLUMN; j++) {
                 board[i][j] = 'B';
             }
         }
     }
 
     static void showBoard() {
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 7; j++) {
+        for (int i = 0; i < LINE; i++) {
+            for (int j = 0; j < COLUMN; j++) {
                 System.out.print(" " + board[i][j]);
             }
             System.out.println();
@@ -39,8 +43,13 @@ public class App {
     }
 
     static void playerMove() {
-        System.out.println("Escolha uma coluna entre 1 e 6: ");
+        System.out.println("Escolha uma coluna entre 1 e 7: ");
         int column = sc.nextInt() - 1;
+
+        if (column < 0 || column > 6) {
+            System.out.println("Coluna inválida!");
+            playerMove();
+        }
 
         for (int i = 5; i >= 0; i--) {
             if (board[i][column] == 'B') {
@@ -48,16 +57,96 @@ public class App {
                 break;
             }
         }
+
+        if (isWin(playerColor)) {
+            System.out.println("Você ganhou!");
+            System.exit(0);
+        }
     }
 
     static void randomComputerMove() {
-        int column = (int) (Math.random() * 7);
+        int column = (int) (Math.random() * COLUMN);
 
         for (int i = 5; i >= 0; i--) {
             if (board[i][column] == 'B') {
                 board[i][column] = computerColor;
                 break;
             }
+        }
+
+        if (isWin(computerColor)) {
+            System.out.println("O computador ganhou!");
+            System.exit(0);
+        }
+    }
+
+    public static boolean isWin(char color) {
+        // Horizontal
+        for (int i = 0; i < LINE; i++) {
+            for (int j = 0; j < COLUMN - 3; j++) {
+                if (board[i][j] == color && board[i][j + 1] == color && board[i][j + 2] == color
+                        && board[i][j + 3] == color)
+                    return true;
+            }
+
+        }
+
+        // Vertical
+        for (int i = 0; i < LINE - 3; i++) {
+            for (int j = 0; j < COLUMN; j++) {
+                if (board[i][j] == color && board[i + 1][j] == color && board[i + 2][j] == color
+                        && board[i + 3][j] == color)
+                    return true;
+            }
+
+        }
+
+        // Diagonal up
+        for (int i = 3; i < LINE; i++) {
+            for (int j = 0; j < COLUMN - 3; j++) {
+                if (board[i][j] == color && board[i - 1][j + 1] == color && board[i - 2][j + 2] == color
+                        && board[i - 3][j + 3] == color)
+                    return true;
+            }
+        }
+
+        // Diagonal down
+        for (int i = 3; i < LINE; i++) {
+            for (int j = 3; j < COLUMN; j++) {
+                if (board[i][j] == color && board[i - 1][j - 1] == color && board[i - 2][j - 2] == color
+                        && board[i - 3][j - 3] == color)
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+    static void reset() {
+        init();
+        run();
+    }
+
+    static void runOptions() {
+        System.out.println("Digite 1 para continuar, 2 para ver o tabuleiro ou 0 para resetar o jogo: ");
+        int option = sc.nextInt();
+
+        if (option == 2) {
+            showBoard();
+            runOptions();
+        }
+
+        if (option == 0) {
+            reset();
+        }
+    }
+
+    static void run() {
+        while (true) {
+            playerMove();
+            randomComputerMove();
+
+            runOptions();
         }
     }
 }
