@@ -10,6 +10,23 @@ public class App {
     private static char computerColor;
 
     public static void main(String[] args) throws Exception {
+        init();
+        sc.close();
+    }
+
+    static void init() {
+        chooseCollor();
+
+        for (int i = 0; i < LINE; i++) {
+            for (int j = 0; j < COLUMN; j++) {
+                board[i][j] = 'B';
+            }
+        }
+
+        run();
+    }
+
+    static void chooseCollor() {
         System.out.println("Escolha uma cor: Vermelho (V) ou Azul (A): ");
         playerColor = Character.toUpperCase(sc.next().charAt(0));
 
@@ -17,19 +34,6 @@ public class App {
             computerColor = 'A';
         } else {
             computerColor = 'V';
-        }
-
-        init();
-        run();
-
-        sc.close();
-    }
-
-    static void init() {
-        for (int i = 0; i < LINE; i++) {
-            for (int j = 0; j < COLUMN; j++) {
-                board[i][j] = 'B';
-            }
         }
     }
 
@@ -66,8 +70,14 @@ public class App {
         }
 
         if (isWin(playerColor)) {
-            System.out.println("Você ganhou!");
-            System.exit(0);
+            System.out.println("Você ganhou! Digite 1 para jogar novamente ou 0 para sair");
+            int option = sc.nextInt();
+
+            if (option == 1) {
+                reset();
+            } else if (option == 0) {
+                System.exit(0);
+            }
         }
     }
 
@@ -88,8 +98,14 @@ public class App {
         }
 
         if (isWin(computerColor)) {
-            System.out.println("O computador ganhou!");
-            System.exit(0);
+            System.out.println("O computador ganhou! Digite 1 para jogar novamente ou 0 para sair");
+             int option = sc.nextInt();
+
+            if (option == 1) {
+                reset();
+            } else if (option == 0) {
+                System.exit(0);
+            }
         }
     }
 
@@ -136,7 +152,6 @@ public class App {
 
     static void reset() {
         init();
-        run();
     }
 
     static void runOptions() {
@@ -151,6 +166,10 @@ public class App {
 
         if (option == 0) {
             reset();
+        }
+
+        if (option != 1 && option != 2 && option != 0) {
+            runOptions();
         }
     }
 
