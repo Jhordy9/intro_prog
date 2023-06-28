@@ -70,7 +70,8 @@ public class App {
         }
 
         if (isWin(playerColor)) {
-            int option = finalMessage();
+            System.out.println("Você ganhou!");
+            int option = handleRestart();
 
             if (option == 1) {
             reset();
@@ -81,7 +82,7 @@ public class App {
             }
 
             if (option != 1 && option != 0) {
-                finalMessage();
+                handleRestart();
             }
         }
     }
@@ -103,7 +104,8 @@ public class App {
         }
 
         if (isWin(computerColor)) {
-            int option = finalMessage();
+            System.out.println("O computador ganhou!");
+            int option = handleRestart();
 
             if (option == 1) {
             reset();
@@ -114,12 +116,12 @@ public class App {
             }
 
             if (option != 1 && option != 0) {
-                finalMessage();
+                handleRestart();
             }
         }
     }
 
-    static int finalMessage() {
+    static int handleRestart() {
         System.out.println("Digite 1 para jogar novamente ou 0 para sair");
         int option = sc.nextInt();
 
