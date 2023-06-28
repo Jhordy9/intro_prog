@@ -70,13 +70,18 @@ public class App {
         }
 
         if (isWin(playerColor)) {
-            System.out.println("Você ganhou! Digite 1 para jogar novamente ou 0 para sair");
-            int option = sc.nextInt();
+            int option = finalMessage();
 
             if (option == 1) {
-                reset();
-            } else if (option == 0) {
+            reset();
+            }
+
+            if (option == 0) {
                 System.exit(0);
+            }
+
+            if (option != 1 && option != 0) {
+                finalMessage();
             }
         }
     }
@@ -98,15 +103,27 @@ public class App {
         }
 
         if (isWin(computerColor)) {
-            System.out.println("O computador ganhou! Digite 1 para jogar novamente ou 0 para sair");
-             int option = sc.nextInt();
+            int option = finalMessage();
 
             if (option == 1) {
-                reset();
-            } else if (option == 0) {
+            reset();
+            }
+
+            if (option == 0) {
                 System.exit(0);
             }
+
+            if (option != 1 && option != 0) {
+                finalMessage();
+            }
         }
+    }
+
+    static int finalMessage() {
+        System.out.println("Digite 1 para jogar novamente ou 0 para sair");
+        int option = sc.nextInt();
+
+        return option;
     }
 
     public static boolean isWin(char color) {
